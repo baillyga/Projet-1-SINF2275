@@ -1,6 +1,5 @@
-#######################
 # Projet 1 - SINF2275 #
-#######################
+
 
 Dépôt des fichiers pour le Projet 1 du groupe nº8.
 
