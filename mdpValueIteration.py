@@ -566,3 +566,12 @@ layout=[0,1,0,0,3,0,4,2,0,4,4,2,0,4,0]
 print("Check MDP if circle=True\n")
 opt = markovDecision(layout, False)
 print(opt[1], "\n")
+
+layout=[0,1,0,2,3,0,2,0,1,0,4,2,0,4,0]
+print("Check MDP if circle=False\n")
+opt = markovDecision(layout, False)
+print(opt, "\n")
+
+print("Check MDP if circle=True\n")
+opt = markovDecision(layout, True)
+print(opt, "\n")

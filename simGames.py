@@ -194,6 +194,16 @@ print("empirical number of turn for each squares (cirlce): "+ str(empirical(layo
 optStrat=[2,1,2,2,1,2,2,2,2,2,2,0,2,2]
 print("empirical number of turn for each squares (no cirlce): "+ str(empirical(layout,False,optStrat,1000)))
 
+result=game(layout,False,optStrat)[0]
+table="Dice   Value   position   trap  triggered  nb_turn"
+for i in range(0,len(result)):
+    table+="\n{:^5}  {:^5}     {:^5}   {:^5}    {:^5}    {:^5} ".format(result[i][0],result[i][1],result[i][2],result[i][3],result[i][4],result[i][5])
+print(table)
 
-[0, 1, 0, 0, 3, 0, 4, 2, 0, 0, 4, 2, 0, 0]
-[3., 2., 3., 3., 2., 3., 3., 3., 3., 3., 3., 1., 3., 3.]
+layout=[0,1,0,2,3,0,2,0,1,0,4,2,0,4]
+optStrat=[1,0,2,1,2,1,0,0,0,0,0,0,1,0]
+print("empirical number of turn for each squares (cirlce): "+ str(empirical(layout,True,optStrat,1000)))
+
+optStrat=[1,0,2,1,2,1,0,0,0,2,0,0,2,0]
+print("empirical number of turn for each squares (no cirlce): "+ str(empirical(layout,False,optStrat,1000)))
+
