@@ -530,7 +530,7 @@ def markovDecision(layout, circle):
 
 """
 Some basic test
-"""
+---------------
 
 layoutSimple = np.array([0,1,1,1,4,\
                          4,0,0,0,0,\
@@ -575,3 +575,4 @@ print(opt, "\n")
 print("Check MDP if circle=True\n")
 opt = markovDecision(layout, True)
 print(opt, "\n")
+"""

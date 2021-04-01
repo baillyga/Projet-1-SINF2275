@@ -9,6 +9,7 @@ Created on Mon Mar 29 18:49:02 2021
 
 import random
 import itertools
+import pandas as pd
 
 import numpy as np
 
@@ -159,7 +160,7 @@ def summary(layout,circle,strategy,iteration):
         stop+=1
     return total_turn/iteration
 
-ite=100
+ite=1000000
 print("Expected turns for random and no circle: "+ str(summary(layout,False,strat3,ite)))
 print("Expected turns for random and circle: "+ str(summary(layout,True,strat3,ite)))
 print("Expected turns for safe and no circle: "+ str(summary(layout,False,strat0,ite)))
@@ -202,8 +203,62 @@ print(table)
 
 layout=[0,1,0,2,3,0,2,0,1,0,4,2,0,4]
 optStrat=[1,0,2,1,2,1,0,0,0,0,0,0,1,0]
-print("empirical number of turn for each squares (cirlce): "+ str(empirical(layout,True,optStrat,1000)))
+print("empirical number of turn for each squares (cirlce): "+ str(empirical(layout,True,optStrat,1000000)))
 
 optStrat=[1,0,2,1,2,1,0,0,0,2,0,0,2,0]
-print("empirical number of turn for each squares (no cirlce): "+ str(empirical(layout,False,optStrat,1000)))
+print("empirical number of turn for each squares (no cirlce): "+ str(empirical(layout,False,optStrat,1000000)))
+
+
+
+def distSim(layout,circle,strategy,iteration):
+    """
+    Inputs:
+        - layout : vector of traps on the board
+        - circle : if circle rule applies
+        - strategy : 0 if only safe, 1 if only normal, 2 if only risky, 3 if random
+    --------------------------------------------------------------------------------
+    Outputs:
+        - vector of length <iteration> (used to represent the distribution)
+    """
+    stop = 0
+    dist = []
+    while stop <= iteration-1:
+        res = game(layout,circle,strategy)[0]
+        dist.append(len(res))
+        stop += 1
+    return dist
+
+layout = [0,1,0,2,3,0,2,0,1,0,4,2,0,4]
+
+stratFalse = [1,0,2,1,2,1,0,0,0,2,0,0,2,0]
+
+optDist = distSim(layout, False, stratFalse, ite)
+safeDist = distSim(layout,False,strat0,ite)
+normalDist = distSim(layout,False,strat1,ite)
+riskyDist = distSim(layout,False,strat2,ite)
+randomDist = distSim(layout,False,strat3,ite)
+dfF = pd.DataFrame(data={"Optimal": optDist, "Security": safeDist, "Normal": normalDist, "Risky": riskyDist, "Random": randomDist})
+dfF.to_csv('distFalse.csv') 
+
+
+# performance if circle = True
+
+stratTrue = [1,0,2,1,2,1,0,0,0,0,0,0,1,0]
+
+optDistT = distSim(layout, True, stratTrue, ite)
+safeDistT = distSim(layout,True,strat0,ite)
+normalDistT = distSim(layout,True,strat1,ite)
+riskyDistT = distSim(layout,True,strat2,ite)
+randomDistT = distSim(layout,True,strat3,ite)
+
+dfT = pd.DataFrame(data={"Optimal": optDistT, "Security": safeDistT, "Normal": normalDistT, "Risky": riskyDistT, "Random": randomDistT})
+dfT.to_csv('distTrue.csv') 
+
+stratHuman = [1,0,2,0,2,0,0,0,0,2,2,0,2,0]
+
+humanDist = distSim(layout, False, stratHuman, ite)
+dfH = pd.DataFrame(data={"Human": humanDist})
+dfH.to_csv('distHuman.csv') 
+
+
 
